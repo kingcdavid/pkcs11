@@ -1524,6 +1524,7 @@ func (c *Ctx) GenerateKeyPair(sh SessionHandle, m []*Mechanism, public, private 
 		pubkey  C.CK_OBJECT_HANDLE
 		privkey C.CK_OBJECT_HANDLE
 	)
+	fmt.Println("PKCS11: Generating key pair with mechanism:", m[0].Mechanism)
 	pubarena, pub, pubcount := cAttributeList(public)
 	defer pubarena.Free()
 	privarena, priv, privcount := cAttributeList(private)
