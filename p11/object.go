@@ -51,7 +51,7 @@ func (o Object) Attribute(attributeType uint) ([]byte, error) {
 	// attribute. We don't consider that an error, we just consider that
 	// equivalent to an empty value.
 	if err == pkcs11.Error(pkcs11.CKR_ATTRIBUTE_TYPE_INVALID) {
-		return nil, nil
+		return nil, err
 	} else if err != nil {
 		return nil, err
 	}
