@@ -2,6 +2,7 @@ package p11
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/kingcdavid/pkcs11"
@@ -217,6 +218,7 @@ func (s *sessionImpl) GenerateKeyPair(request GenerateKeyPairRequest) (*KeyPair,
 		request.PublicKeyAttributes,
 		request.PrivateKeyAttributes)
 	if err != nil {
+		fmt.Println("Error generating key pair:", err)
 		return nil, err
 	}
 	return &KeyPair{
