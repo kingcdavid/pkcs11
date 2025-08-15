@@ -1532,12 +1532,13 @@ func (c *Ctx) GenerateKeyPair(sh SessionHandle, m []*Mechanism, public, private 
 	mecharena, mech := cMechanism(m)
 	defer mecharena.Free()
 	e := C.GenerateKeyPair(c.ctx, C.CK_SESSION_HANDLE(sh), mech, pub, pubcount, priv, privcount, C.CK_OBJECT_HANDLE_PTR(&pubkey), C.CK_OBJECT_HANDLE_PTR(&privkey))
+	fmt.Println("Error generating key pair:", e)
 	e1 := toError(e)
 	if e1 == nil {
 		fmt.Println("Successfully generated key pair")
 		return ObjectHandle(pubkey), ObjectHandle(privkey), nil
 	}
-	fmt.Println("Error generating key pair:", e)
+	fmt.Println("Error generating key pair:", e1)
 	return 0, 0, e1
 }
 
