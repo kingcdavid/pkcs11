@@ -904,6 +904,7 @@ const (
 
 	CKK_ML_DSA = 0x0000004a
 
+	CKA_PARAMETER_SET        = 0x0000061d
 	CKM_ML_DSA_KEY_PAIR_GEN  = 0x0000001c
 	CKM_ML_DSA               = 0x0000001d
 	CKM_HASH_ML_DSA          = 0x0000001f
