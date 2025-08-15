@@ -1531,6 +1531,8 @@ func (c *Ctx) GenerateKeyPair(sh SessionHandle, m []*Mechanism, public, private 
 	defer privarena.Free()
 	mecharena, mech := cMechanism(m)
 	defer mecharena.Free()
+	fmt.Println("PKCS11: Generating key pair with mechanism:", m[0].Mechanism)
+
 	e := C.GenerateKeyPair(c.ctx, C.CK_SESSION_HANDLE(sh), mech, pub, pubcount, priv, privcount, C.CK_OBJECT_HANDLE_PTR(&pubkey), C.CK_OBJECT_HANDLE_PTR(&privkey))
 	fmt.Println("Error generating key pair:", e)
 	e1 := toError(e)
