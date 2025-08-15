@@ -52,10 +52,10 @@ func (o Object) Attribute(attributeType uint) ([]byte, error) {
 	// attribute. We don't consider that an error, we just consider that
 	// equivalent to an empty value.
 	if err == pkcs11.Error(pkcs11.CKR_ATTRIBUTE_TYPE_INVALID) {
-		fmt.Errorf("PKCS11: Attribute not found:", attributeType)
+		fmt.Printf("PKCS11: Attribute not found: %+v\n", attributeType)
 		return nil, nil
 	} else if err != nil {
-		fmt.Errorf("PKCS11: Attribute not found:", attributeType)
+		fmt.Printf("PKCS11: Attribute not found: %+v\n", attributeType)
 		return nil, err
 	}
 	if len(attrs) == 0 {
