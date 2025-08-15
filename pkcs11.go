@@ -775,7 +775,6 @@ static inline CK_VOID_PTR getAttributePval(CK_ATTRIBUTE_PTR a)
 */
 import "C"
 import (
-	"fmt"
 	"strings"
 	"unsafe"
 )
@@ -1524,50 +1523,17 @@ func (c *Ctx) GenerateKeyPair(sh SessionHandle, m []*Mechanism, public, private 
 		pubkey  C.CK_OBJECT_HANDLE
 		privkey C.CK_OBJECT_HANDLE
 	)
-	fmt.Println("PKCS11: Generating key pair with mechanism:", m[0].Mechanism)
 	pubarena, pub, pubcount := cAttributeList(public)
 	defer pubarena.Free()
 	privarena, priv, privcount := cAttributeList(private)
 	defer privarena.Free()
 	mecharena, mech := cMechanism(m)
 	defer mecharena.Free()
-	fmt.Println("PKCS11: Generating key pair with mechanism:", m[0].Mechanism)
-	// Debug: print all params just before calling C.GenerateKeyPair
-	fmt.Printf("C.GenerateKeyPair params:\n")
-	fmt.Printf(" - ctx: %p\n", c.ctx)
-	fmt.Printf(" - session: %d\n", uint(sh))
-	if mech != nil {
-		fmt.Printf(" - mech: %p [type=0x%X paramLen=%d param=%p]\n", mech, uint(m[0].Mechanism), uint(mech.ulParameterLen), mech.pParameter)
-	} else {
-		fmt.Printf(" - mech: <nil>\n")
-	}
-	fmt.Printf(" - pub template ptr: %p (count=%d)\n", pub, uint(pubcount))
-	for i, a := range public {
-		if a == nil {
-			fmt.Printf("   - pub[%d]: <nil>\n", i)
-			continue
-		}
-		fmt.Printf("   - pub[%d]: type=0x%X len=%d value=% X\n", i, a.Type, len(a.Value), a.Value)
-	}
-	fmt.Printf(" - priv template ptr: %p (count=%d)\n", priv, uint(privcount))
-	for i, a := range private {
-		if a == nil {
-			fmt.Printf("   - priv[%d]: <nil>\n", i)
-			continue
-		}
-		fmt.Printf("   - priv[%d]: type=0x%X len=%d value=% X\n", i, a.Type, len(a.Value), a.Value)
-	}
-	fmt.Printf(" - pubkey out ptr: %p\n", &pubkey)
-	fmt.Printf(" - privkey out ptr: %p\n", &privkey)
-
 	e := C.GenerateKeyPair(c.ctx, C.CK_SESSION_HANDLE(sh), mech, pub, pubcount, priv, privcount, C.CK_OBJECT_HANDLE_PTR(&pubkey), C.CK_OBJECT_HANDLE_PTR(&privkey))
-	fmt.Println("Error generating key pair:", e)
 	e1 := toError(e)
 	if e1 == nil {
-		fmt.Println("Successfully generated key pair")
 		return ObjectHandle(pubkey), ObjectHandle(privkey), nil
 	}
-	fmt.Println("Error generating key pair:", e1)
 	return 0, 0, e1
 }
 

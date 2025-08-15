@@ -30,8 +30,6 @@ import (
 	"fmt"
 	"time"
 	"unsafe"
-
-	"runtime/debug"
 )
 
 type arena []unsafe.Pointer
@@ -82,7 +80,6 @@ func uintToBytes(x uint64) []byte {
 type Error uint
 
 func (e Error) Error() string {
-	debug.PrintStack()
 	return fmt.Sprintf("pkcs11: 0x%X: %s", uint(e), strerror[uint(e)])
 }
 
@@ -271,7 +268,7 @@ func NewMechanism(mech uint, x interface{}) *Mechanism {
 		m.Parameter = p
 	default:
 		panic("parameter must be one of type: []byte, *GCMParams, *OAEPParams, *ECDH1DeriveParams," +
-			" *RSAAESKeyWrapParams")
+			  " *RSAAESKeyWrapParams")
 	}
 
 	return m
